@@ -1,10 +1,10 @@
-﻿namespace Arch_VaderData
+﻿namespace Arch_VaderData;
+
+internal class Program
 {
-    internal class Program
+    private static void Main()
     {
-        static void Main(string[] args)
-        {
-            Console.WriteLine("Hello, World!");
-        }
+        MoldRisk.Run();
     }
 }
+
