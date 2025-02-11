@@ -4,9 +4,7 @@
     {
         static void Main(string[] args)
         {
-            GetData.AverageTempAndHumidity();
 
-            Console.ReadLine();
         }
     }
 }
