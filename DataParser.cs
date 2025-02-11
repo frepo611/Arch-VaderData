@@ -5,12 +5,32 @@ namespace Arch_VaderData;
 
 public class DataParser
 {
-    private Dictionary<DateTime, Dictionary<string, (List<double> Temperatures, List<double> Humidities)>> _data;
+    private Dictionary<DateTime, Dictionary<string, (List<double> Temperatures, List<double> Humidities)>> _allData;
+    private Dictionary<DateTime, Dictionary<string, (double Temperature, double Humidity)>> _data;
     public DataParser()
     {
-        _data = new Dictionary<DateTime, Dictionary<string, (List<double> Temperatures, List<double> Humidities)>>();
+        _allData = new Dictionary<DateTime, Dictionary<string, (List<double> Temperatures, List<double> Humidities)>>();
+        _data = new Dictionary<DateTime, Dictionary<string, (double Temperature, double Humidity)>>();
     }
 
+    public void AverageData()
+    {
+        foreach (var entry in _allData)
+        {
+            var dataEntry = entry.Value;
+            foreach (var location in dataEntry)
+            {
+                var temperatures = location.Value.Temperatures;
+                var humidities = location.Value.Humidities;
+                double avgTemperature = temperatures.Count > 0 ? temperatures.Average() : 0;
+                double avgHumidity = humidities.Count > 0 ? humidities.Average() : 0;
+                _data[entry.Key] = new Dictionary<string, (double Temperature, double Humidity)>
+                {
+                    { location.Key, (avgTemperature, avgHumidity) }
+                };
+            }
+        }
+    }
     public void AddDataLine(string dataLine, int index)
     {
         string[] data = dataLine.Split(',');
@@ -48,21 +68,25 @@ public class DataParser
     }
     private void AddData(DateTime dateTime, string location, double temperature, double humidity)
     {
-        if (!_data.ContainsKey(dateTime))
+        if (!_allData.ContainsKey(dateTime))
         {
-            _data[dateTime] = new Dictionary<string, (List<double> Temperatures, List<double> Humidities)>
+            _allData[dateTime] = new Dictionary<string, (List<double> Temperatures, List<double> Humidities)>
             {
                 { "Inne", (new List<double>(), new List<double>()) },
                 { "Ute", (new List<double>(), new List<double>()) }
             };
         }
 
-        var dataEntry = _data[dateTime][location];
+        var dataEntry = _allData[dateTime][location];
         dataEntry.Temperatures.Add(temperature);
         dataEntry.Humidities.Add(humidity);
-        _data[dateTime][location] = dataEntry;
+        _allData[dateTime][location] = dataEntry;
     }
-    public Dictionary<DateTime, Dictionary<string, (List<double> Temperatures, List<double> Humidities)>> GetData()
+    public Dictionary<DateTime, Dictionary<string, (List<double> Temperatures, List<double> Humidities)>> GetAllData()
+    {
+        return _allData;
+    }
+    public Dictionary<DateTime, Dictionary<string, (double Temperature, double Humidity)>> GetData()
     {
         return _data;
     }

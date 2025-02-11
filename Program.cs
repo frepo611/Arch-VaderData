@@ -18,7 +18,7 @@ internal class Program
         {
             Console.WriteLine("File not found.");
         }
-        var data = dataParser.GetData();
+        var data = dataParser.GetAllData();
         foreach (var entry in data)
         {
             Console.WriteLine($"Date: {entry.Key}");
