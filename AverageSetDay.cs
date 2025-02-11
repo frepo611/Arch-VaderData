@@ -39,7 +39,7 @@ namespace Arch_VaderData
             }
         }
 
-        public static void AverageTempAndHumidityOutside()
+        public static void AverageTempAndHumidityOutside(string location)
         {
             double averageTemp = 0;
             double averageHumidity = 0;
@@ -50,7 +50,7 @@ namespace Arch_VaderData
                 {
                     string dateToCheck = "^";
                     dateToCheck += CheckFormat();
-                    dateToCheck += ".*?,Ute,([\\d.]+),([\\d.]+)";
+                    dateToCheck += $".*?,{location},([\\d.]+),([\\d.]+)";
 
                     RegexOptions options = RegexOptions.Multiline;
                     string fullData = reader.ReadToEnd();
@@ -67,7 +67,10 @@ namespace Arch_VaderData
                             if (match.Success)
                             {
                                 averageTemp += double.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture);
-                                averageHumidity += double.Parse(match.Groups[2].Value);
+                                if (location == "Ute")
+                                {
+                                    averageHumidity += double.Parse(match.Groups[2].Value);
+                                }
                             }
                         }
 
@@ -78,45 +81,12 @@ namespace Arch_VaderData
                 }
             }
             Console.WriteLine($"Average temp outside: {averageTemp}");
-            Console.WriteLine($"Average humidity outside: {averageHumidity}");
-        }
-
-
-        public static void AverageTempInside()
-        {
-            double averageTemp = 0;
-
-            using (StreamReader reader = new StreamReader(tempData))
+            if (location == "Ute")
             {
-                while (true)
-                {
-                    string dateToCheck = "^";
-                    dateToCheck += CheckFormat();
-                    dateToCheck += ".*?,Inne,([\\d.]+),([\\d.]+)";
-
-                    RegexOptions options = RegexOptions.Multiline;
-                    string fullData = reader.ReadToEnd();
-                    Regex data = new Regex(dateToCheck, options);
-                    MatchCollection matches = data.Matches(fullData);
-                    if (matches.Count == 0)
-                    {
-                        Console.WriteLine("No matching date was found, try again");
-                    }
-                    else
-                    {
-                        foreach (Match match in matches)
-                        {
-                            if (match.Success)
-                            {
-                                averageTemp += double.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture);
-                            }
-                        }
-                        averageTemp = Math.Round(averageTemp / matches.Count(), 2);
-                        break;
-                    }
-                }
-                Console.WriteLine($"Average temp inside: {averageTemp}");
+                Console.WriteLine($"Average humidity outside: {averageHumidity}");
             }
         }
+
+
     }
 }
