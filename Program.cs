@@ -1,4 +1,6 @@
-﻿namespace Arch_VaderData;
+﻿using Arch_VaderData.Helpers;
+
+namespace Arch_VaderData;
 
 internal class Program
 {
@@ -7,6 +9,9 @@ internal class Program
 
 
         GetData.ReadAllData();
+
+        AvgTemps.AvgTempDay("Inside");
+        AvgTemps.AvgTempDay("Outside");
 
         //var yes = Models.Dictionary.Data;
 
@@ -25,7 +30,7 @@ internal class Program
 
   
 
-
+        
         var test = Models.Dictionary.Data[dateTime];
 
 
