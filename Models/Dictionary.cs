@@ -9,7 +9,7 @@ namespace Arch_VaderData.Models
     internal class Dictionary
     {
 
-
+        public static Dictionary<DateTime, (Inside?, Outside)> Data { get; } = new Dictionary<DateTime, (Inside?, Outside?)>();
 
     }
 }

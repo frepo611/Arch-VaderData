@@ -8,15 +8,15 @@ namespace Arch_VaderData.Models
 {
     internal class Outside
     {
-        Outside(int avgTemp, int avgHum) 
+        public Outside(double avgTemp, double avgHum) 
         {
             AvgTemp = avgTemp;
             AvgHum = avgHum;
                 
         }
 
-        public int AvgTemp { get; }
-        public int AvgHum { get;}
+        public double AvgTemp { get; set; }
+        public double AvgHum { get; set; }
 
     }
 }

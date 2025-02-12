@@ -8,12 +8,12 @@ namespace Arch_VaderData.Models
 {
     internal class Inside
     {
-        Inside(int avgTemp) 
+        public Inside(double avgTemp) 
         {   
             AvgTemp = avgTemp;
         }
 
 
-        public int AvgTemp { get;}
+        public double AvgTemp { get; set; }
     }
 }
