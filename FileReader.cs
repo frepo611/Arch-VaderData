@@ -4,9 +4,9 @@ namespace Arch_VaderData;
 public class FileReader
 {
     private string _filename;
-    private DataParser _dataParser;
+    private WeatherData _dataParser;
 
-    public FileReader(string filename, DataParser dataParser)
+    public FileReader(string filename, WeatherData dataParser)
     {
         _filename = filename;
         _dataParser = dataParser;
