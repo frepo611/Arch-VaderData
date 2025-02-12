@@ -25,12 +25,13 @@ namespace Arch_VaderData
                 while (dateTime <= dateTimeEnd)
                 {
                     double inTemp = 0;
+                    double inHumi = 0;
                     double outTemp = 0;
                     double outHumi = 0;
                     int countIn = 0;
                     int countOut = 0;
 
-                    string dateToCheck = $"{dateTime.ToString("yyyy-MM-dd")}.*,(.*),([\\d.]+),([\\d.]+)";
+                    string dateToCheck = $"{dateTime.ToString("yyyy-MM-dd")}.*,(.*),(-?[\\d.]+),([\\d.]+)";
 
                     Regex data = new Regex(dateToCheck, options);
                     MatchCollection matches = data.Matches(fullData);
@@ -42,8 +43,9 @@ namespace Arch_VaderData
                             if (match.Success)
                             {
                                 if (match.Groups[1].Value == "Inne")
-                                {
+                                {                                   
                                     inTemp += double.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture);
+                                    inHumi += double.Parse(match.Groups[3].Value, CultureInfo.InvariantCulture);
                                     countIn++;
 
                                 }
@@ -58,12 +60,13 @@ namespace Arch_VaderData
                             }
                         }
 
-                        inTemp = Math.Round(inTemp / countIn,2);
-                        outTemp = Math.Round(outTemp / countOut,2);
-                        outHumi = Math.Round(outHumi / countOut,0);
+                        inTemp = Math.Round(inTemp / countIn, 2);
+                        inHumi = Math.Round(inHumi / countIn, 0);
+                        outTemp = Math.Round(outTemp / countOut, 2);
+                        outHumi = Math.Round(outHumi / countOut, 0);
 
 
-                        Models.Inside inside = new Models.Inside(inTemp);
+                        Models.Inside inside = new Models.Inside(inTemp, inHumi);
                         Models.Outside outside = new Models.Outside(outTemp,outHumi);
 
                         Models.Dictionary.Data.Add(dateTime, (inside,outside));                      
