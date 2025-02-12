@@ -11,12 +11,9 @@ namespace Arch_VaderData.Models
         public Outside(double avgTemp, double avgHum) 
         {
             AvgTemp = avgTemp;
-            AvgHum = avgHum;
-                
+            AvgHum = avgHum;            
         }
-
         public double AvgTemp { get; set; }
         public double AvgHum { get; set; }
-
     }
 }

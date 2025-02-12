@@ -45,12 +45,10 @@ namespace Arch_VaderData.Helpers
                 {
                     if (location == "Inside")
                     {
-
                         Models.Inside inside = dayData.Item1;
                         Console.WriteLine(inside.AvgTemp);
                         Console.ReadKey();
                         break;
-
                     }
                     else
                     {

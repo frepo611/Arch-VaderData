@@ -14,18 +14,13 @@ namespace Arch_VaderData
 
         public static void ReadAllData()
         {
-            // Kolla om det är inne och ute på samma dag
-
-
             DateTime dateTime = new DateTime(2016, 06, 01);
             DateTime dateTimeEnd = new DateTime(2016, 12, 24);
-
 
             using (StreamReader reader = new StreamReader(tempData))
             {
                 RegexOptions options = RegexOptions.Multiline;
                 string fullData = reader.ReadToEnd();
-
 
                 while (dateTime <= dateTimeEnd)
                 {
@@ -36,7 +31,6 @@ namespace Arch_VaderData
                     int countOut = 0;
 
                     string dateToCheck = $"{dateTime.ToString("yyyy-MM-dd")}.*,(.*),([\\d.]+),([\\d.]+)";
-
 
                     Regex data = new Regex(dateToCheck, options);
                     MatchCollection matches = data.Matches(fullData);
@@ -72,19 +66,11 @@ namespace Arch_VaderData
                         Models.Inside inside = new Models.Inside(inTemp);
                         Models.Outside outside = new Models.Outside(outTemp,outHumi);
 
-                        Models.Dictionary.Data.Add(dateTime, (inside,outside));
-
-                        
-
+                        Models.Dictionary.Data.Add(dateTime, (inside,outside));                      
                     }
                     dateTime = dateTime.AddDays(1);
-
                 }
             }
         }
-
-
-
-
     }
 }

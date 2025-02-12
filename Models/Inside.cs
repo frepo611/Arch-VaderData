@@ -12,8 +12,6 @@ namespace Arch_VaderData.Models
         {   
             AvgTemp = avgTemp;
         }
-
-
         public double AvgTemp { get; set; }
     }
 }
