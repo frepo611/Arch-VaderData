@@ -10,7 +10,7 @@ namespace Arch_VaderData
 {
     internal class GetData
     {
-        private static string tempData = "filtered_data.txt";
+        private static string tempData = "tempdata5-med fel.txt";
 
         public static void ReadAllData()
         {

@@ -6,34 +6,36 @@ internal class Program
 {
     private static void Main()
     {
+        UserInterface ui = new UserInterface();
+        ui.Run();
 
 
-        GetData.ReadAllData();
+        
 
 
-        DataInOrder.TempOrHumidInOrder("Outside", false);
+        //DataInOrder.TempOrHumidInOrder("Outside", false);
 
 
-        AvgTemps.AvgTempDay("Inside");
-        AvgTemps.AvgTempDay("Outside");
+        //AvgTemps.AvgTempDay("Inside");
+        //AvgTemps.AvgTempDay("Outside");
 
 
-        DateTime dateTime = new DateTime (2016,07,29);
+        //DateTime dateTime = new DateTime (2016,07,29);
 
 
 
   
 
         
-        var test = Models.Dictionary.Data[dateTime];
+        //var test = Models.Dictionary.Data[dateTime];
 
 
-        Models.Inside inside1 = test.Item1;
-        Models.Outside outside1 = test.Item2;
+        //Models.Inside inside1 = test.Item1;
+        //Models.Outside outside1 = test.Item2;
 
 
 
-        Console.ReadLine(); 
+        //Console.ReadLine(); 
 
 
 

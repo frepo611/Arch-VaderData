@@ -1,13 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Arch_VaderData.Models;
 
-namespace Arch_VaderData.Models
+internal class Dictionary
 {
-    internal class Dictionary
+    public static Dictionary<DateTime, (Inside?, Outside)> Data { get; } = new Dictionary<DateTime, (Inside?, Outside?)>();
+    public static List<String> GetDataStatus()
     {
-        public static Dictionary<DateTime, (Inside?, Outside)> Data { get; } = new Dictionary<DateTime, (Inside?, Outside?)>();
+        {
+            //Data.Count == 0 ? "No data read" : ""
+            List<String> dataStatus = new List<String>();
+            dataStatus.Add($"{(Data.Count == 0 ? "No data read" : $"{Data.Count} days read")}");
+            return dataStatus;
+        }
     }
 }

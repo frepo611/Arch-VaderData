@@ -1,18 +1,21 @@
 ﻿namespace Arch_VaderData;
+using Models;
 public class UserInterface
 {
     private Window _mainMenu;
+    private Window _dataStatus;
     public UserInterface()
     {
         _mainMenu = new Window("Main menu", 0, 0, GetMenuItems<Menues.Main>());
+        _dataStatus = new Window("Data status", 20, 0, Dictionary.GetDataStatus());
         Console.CursorVisible = false;
     }
     public void Run()
     {
         Console.Clear();
         _mainMenu.Draw();
+        _dataStatus.Draw();
         SelectMainMenuItem();
-
     }
 
     private void SelectMainMenuItem()
@@ -24,9 +27,13 @@ public class UserInterface
                 switch (choice)
                 {
                     case Menues.Main.Exit:
+                        Environment.Exit(0);
                         break;
                     case Menues.Main.Read_data:
                         Console.Clear();
+                        GetData.ReadAllData();
+                        _dataStatus.UpdateTextRows(Dictionary.GetDataStatus());
+                        Run();
                         break;
                     case Menues.Main.Outdoor_data:
                         break;
