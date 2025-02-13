@@ -1,4 +1,6 @@
 ﻿namespace Arch_VaderData;
+
+using Arch_VaderData.Helpers;
 using Models;
 public static class UserInterface
 {
@@ -69,9 +71,14 @@ public static class UserInterface
                     case Menues.Indoor.Back:
                         StartMenu();
                         break;
+                    case Menues.Indoor.Search_date:
+                        AvgTemps.AvgTempDay("Inside");
+                        break;
                     case Menues.Indoor.Show_warmest_to_coldest:
+                        DataInOrder.TempOrHumidInOrder("Inside", false);
                         break;
                     case Menues.Indoor.Show_driest_to_most_humid:
+                        DataInOrder.TempOrHumidInOrder("Inside", true);
                         break;
                     case Menues.Indoor.Show_mold_risk:
                         break;
@@ -93,9 +100,14 @@ public static class UserInterface
                     case Menues.Outdoor.Back:
                         StartMenu();
                         break;
+                    case Menues.Outdoor.Search_date:
+                        AvgTemps.AvgTempDay("Outside");
+                        break;
                     case Menues.Outdoor.Show_warmest_to_coldest:
+                        DataInOrder.TempOrHumidInOrder("Outside", false);
                         break;
                     case Menues.Outdoor.Show_driest_to_most_humid:
+                        DataInOrder.TempOrHumidInOrder("Outside", true);
                         break;
                     case Menues.Outdoor.Meterological_autumn:
                         break;
