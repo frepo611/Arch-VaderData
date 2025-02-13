@@ -1,16 +1,18 @@
 ﻿namespace Arch_VaderData;
 using Models;
-public class UserInterface
+public static class UserInterface
 {
-    private Window _mainMenu;
-    private Window _dataStatus;
-    public UserInterface()
+    private static Window _mainMenu;
+    private static Window _dataStatus;
+    private static Window _outdoorMenu;
+    static UserInterface()
     {
         _mainMenu = new Window("Main menu", 0, 0, GetMenuItems<Menues.Main>());
         _dataStatus = new Window("Data status", 20, 0, Dictionary.GetDataStatus());
         Console.CursorVisible = false;
+        _
     }
-    public void Run()
+    public static void Run()
     {
         Console.Clear();
         _mainMenu.Draw();
@@ -18,7 +20,7 @@ public class UserInterface
         SelectMainMenuItem();
     }
 
-    private void SelectMainMenuItem()
+    private static void SelectMainMenuItem()
     {
         while (true)
         {
@@ -36,6 +38,8 @@ public class UserInterface
                         Run();
                         break;
                     case Menues.Main.Outdoor_data:
+                        Console.Clear();
+
                         break;
                     case Menues.Main.Indoor_data:
                         break;
@@ -51,7 +55,7 @@ public class UserInterface
 
         return Enum.TryParse<T>(rawInput, out input);
     }
-    public List<string> GetMenuItems<TEnum>() where TEnum : Enum
+    static List<string> GetMenuItems<TEnum>() where TEnum : Enum
     {
         var results = new List<string>();
         foreach (var menuItem in Enum.GetValues(typeof(TEnum)))

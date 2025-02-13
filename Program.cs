@@ -4,13 +4,12 @@ namespace Arch_VaderData;
 
 internal class Program
 {
-    private static void Main()
+    static void Main()
     {
-        UserInterface ui = new UserInterface();
-        ui.Run();
+        UserInterface.Run();
 
 
-        
+
 
 
         //DataInOrder.TempOrHumidInOrder("Outside", false);
@@ -24,9 +23,9 @@ internal class Program
 
 
 
-  
 
-        
+
+
         //var test = Models.Dictionary.Data[dateTime];
 
 
