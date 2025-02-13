@@ -112,7 +112,8 @@ public static class UserInterface
                         StartMenu();
                         break;
                     case Menues.Outdoor.Search_date:
-                        AvgTemps.AvgTempDay("Outside");
+                        var data = AvgTemps.AvgTempDay("Outside");
+                        Console.WriteLine(data);
                         break;
                     case Menues.Outdoor.Show_warmest_to_coldest:
                         DataInOrder.TempOrHumidInOrder("Outside", false);
