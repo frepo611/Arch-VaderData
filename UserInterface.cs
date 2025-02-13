@@ -5,14 +5,16 @@ public static class UserInterface
     private static Window _mainMenu;
     private static Window _dataStatus;
     private static Window _outdoorMenu;
+    private static Window _indoorMenu;
     static UserInterface()
     {
-        _mainMenu = new Window("Main menu", 0, 0, GetMenuItems<Menues.Main>());
-        _dataStatus = new Window("Data status", 20, 0, Dictionary.GetDataStatus());
         Console.CursorVisible = false;
-        _
+        _mainMenu = new Window("Main menu", 0, 0, GetMenuItems<Menues.Main>());
+        _dataStatus = new Window("Data status", 40, 0, Dictionary.GetDataStatus());
+        _outdoorMenu = new Window("Outdoor data", 0, 0, GetMenuItems<Menues.Outdoor>());
+        _indoorMenu = new Window("Indoor data", 0, 0, GetMenuItems<Menues.Indoor>());
     }
-    public static void Run()
+    public static void StartMenu()
     {
         Console.Clear();
         _mainMenu.Draw();
@@ -35,15 +37,69 @@ public static class UserInterface
                         Console.Clear();
                         GetData.ReadAllData();
                         _dataStatus.UpdateTextRows(Dictionary.GetDataStatus());
-                        Run();
+                        StartMenu();
                         break;
                     case Menues.Main.Outdoor_data:
                         Console.Clear();
-
+                        _dataStatus.Draw();
+                        _outdoorMenu.Draw();
+                        SelectOutdoorMenuItem();
                         break;
                     case Menues.Main.Indoor_data:
+                        Console.Clear();
+                        _dataStatus.Draw();
+                        _indoorMenu.Draw();
+                        SelectIndoorMenuItem();
                         break;
                     case Menues.Main.Write_file:
+                        break;
+                }
+            }
+        }
+    }
+
+    private static void SelectIndoorMenuItem()
+    {
+        while (true)
+        {
+            if (TryParseInput(out Menues.Indoor choice))
+            {
+                switch (choice)
+                {
+                    case Menues.Indoor.Back:
+                        StartMenu();
+                        break;
+                    case Menues.Indoor.Show_warmest_to_coldest:
+                        break;
+                    case Menues.Indoor.Show_driest_to_most_humid:
+                        break;
+                    case Menues.Indoor.Show_mold_risk:
+                        break;
+                    case Menues.Indoor.Show_open_balcony_door_times:
+                        break;
+                }
+            }
+        }
+    }
+
+    private static void SelectOutdoorMenuItem()
+    {
+        while (true)
+        {
+            if (TryParseInput(out Menues.Outdoor choice))
+            {
+                switch (choice)
+                {
+                    case Menues.Outdoor.Back:
+                        StartMenu();
+                        break;
+                    case Menues.Outdoor.Show_warmest_to_coldest:
+                        break;
+                    case Menues.Outdoor.Show_driest_to_most_humid:
+                        break;
+                    case Menues.Outdoor.Meterological_autumn:
+                        break;
+                    case Menues.Outdoor.Meterological_winter:
                         break;
                 }
             }
