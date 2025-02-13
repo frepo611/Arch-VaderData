@@ -8,6 +8,9 @@ public static class UserInterface
     private static Window _dataStatus;
     private static Window _outdoorMenu;
     private static Window _indoorMenu;
+    private static Window _meterologicalWinter;
+    private static Window _meterologicalAutumn;
+
     static UserInterface()
     {
         Console.CursorVisible = false;
@@ -15,12 +18,16 @@ public static class UserInterface
         _dataStatus = new Window("Data status", 40, 0, Dictionary.GetDataStatus());
         _outdoorMenu = new Window("Outdoor data", 0, 0, GetMenuItems<Menues.Outdoor>());
         _indoorMenu = new Window("Indoor data", 0, 0, GetMenuItems<Menues.Indoor>());
+        _meterologicalWinter = new Window("Meterological winter", 40, 6, new List<string> {"Not computed"});
+        _meterologicalAutumn = new Window("Meterological autumn", 40, 12, new List<string> { "Not computed" });
     }
     public static void StartMenu()
     {
         Console.Clear();
         _mainMenu.Draw();
         _dataStatus.Draw();
+        _meterologicalWinter.Draw();
+        _meterologicalAutumn.Draw();
         SelectMainMenuItem();
     }
 
@@ -45,12 +52,16 @@ public static class UserInterface
                         Console.Clear();
                         _dataStatus.Draw();
                         _outdoorMenu.Draw();
+                        _meterologicalWinter.Draw();
+                        _meterologicalAutumn.Draw();
                         SelectOutdoorMenuItem();
                         break;
                     case Menues.Main.Indoor_data:
                         Console.Clear();
                         _dataStatus.Draw();
                         _indoorMenu.Draw();
+                        _meterologicalWinter.Draw();
+                        _meterologicalAutumn.Draw();
                         SelectIndoorMenuItem();
                         break;
                     case Menues.Main.Write_file:
