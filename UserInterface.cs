@@ -122,10 +122,14 @@ public static class UserInterface
                         ShowData(DataInOrder.TempOrHumidInOrder("Outside", true), false);
                         break;
                     case Menues.Outdoor.Meterological_autumn:
-                        DateTime höst = GetSeason.CalculateSeason(10);
+                        DateTime autumnDate = GetSeason.CalculateSeason(10);
+                        _meterologicalAutumn.UpdateTextRows(new List<string> {autumnDate.ToString()});
+                        _meterologicalAutumn.Draw();
                         break;
                     case Menues.Outdoor.Meterological_winter:
-                        DateTime vinter = GetSeason.CalculateSeason(0);
+                        DateTime winterDate = GetSeason.CalculateSeason(0);
+                        _meterologicalWinter.UpdateTextRows(new List<string> { winterDate.ToString() });
+                        _meterologicalWinter.Draw();
                         break;
                 }
             }
@@ -152,7 +156,7 @@ public static class UserInterface
         {
             foreach (var date in list)
             {
-                Console.Write($"{date.date.ToString("yyyy-MM-dd")}: {date.temp}°C\t");
+                Console.Write($"{date.date.ToString("yyyy-MM-dd"),-12}: {date.temp,-5:f1}°C ");
                 rowCount++;
                 if (rowCount == 6)
                 {
