@@ -18,7 +18,6 @@ namespace Arch_VaderData.Helpers
                 Console.Write("Enter date: ");
                 string regxDate = "2016-(?!(1[3-9]))[0-1][0-9]-(?:0[1-9]|[12][0-9]|3[01])";
                 string date = Console.ReadLine();
-                Console.Clear();
 
                 Regex regex = new Regex(regxDate);
                 MatchCollection matches = regex.Matches(date);
@@ -35,7 +34,7 @@ namespace Arch_VaderData.Helpers
             }
         }
 
-        public static void AvgTempDay(string location)
+        public static (double Temperature, double Humidity) AvgTempDay(string location)
         {
             while (true)
             {
@@ -46,17 +45,12 @@ namespace Arch_VaderData.Helpers
                     if (location == "Inside")
                     {
                         Models.Inside inside = dayData.Item1;
-                        Console.WriteLine(inside.AvgTemp);
-                        Console.ReadKey();
-                        break;
+                        return (inside.AvgTemp, inside.AvgHum);
                     }
                     else
                     {
                         Models.Outside outside = dayData.Item2;
-                        Console.WriteLine(outside.AvgTemp);
-                        Console.WriteLine(outside.AvgHum);
-                        Console.ReadKey();
-                        break;
+                        return (outside.AvgTemp, outside.AvgHum);
                     }
                 }
                 else
