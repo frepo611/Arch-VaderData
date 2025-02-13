@@ -1,55 +1,38 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+﻿namespace Arch_VaderData.Helpers;
 
-namespace Arch_VaderData.Helpers
+internal class DataInOrder
 {
-    internal class DataInOrder
+
+    public static void TempOrHumidInOrder(string location, bool humidValue)
     {
+        List<(DateTime date, double temp, double humi)> allDayData = DataInOrder.DataForSorting(location);
 
-        public static void TempOrHumidInOrder(string location, bool humidValue)
+        int rowCount = 0;
+
+
+        if (humidValue)
         {
-            List<(DateTime date, double temp, double humi)> allDayData = DataInOrder.DataForSorting(location);
+            var sortedDataInHum = allDayData.OrderBy(x => x.humi).ToList();
 
-            int rowCount = 0;
-
-
-            if (humidValue)
+            foreach (var date in sortedDataInHum)
             {
-                var sortedDataInHum = allDayData.OrderByDescending(x => x.humi).ToList();
-
-                foreach (var date in sortedDataInHum)
-                {
-                    Console.Write($"{date.date.ToString("yyyy-MM-dd")}: {date.humi}\t");
-                    rowCount++;
-                    if (rowCount == 6) { Console.WriteLine(); rowCount = 0; }
-                }
+                Console.Write($"{date.date.ToString("yyyy-MM-dd")}: {date.humi}\t");
+                rowCount++;
+                if (rowCount == 6) { Console.WriteLine(); rowCount = 0; }
             }
-            else
+        }
+        else
+        {
+            var sortedDataInTemp = allDayData.OrderByDescending(x => x.temp).ToList();
+
+            foreach (var date in sortedDataInTemp)
             {
-                var sortedDataInTemp = allDayData.OrderByDescending(x => x.temp).ToList();
+                Console.Write($"{date.date.ToString("yyyy-MM-dd")}: {date.temp}\t");
+                rowCount++;
 
-                foreach (var date in sortedDataInTemp)
-                {
-                    Console.Write($"{date.date.ToString("yyyy-MM-dd")}: {date.temp}\t");
-                    rowCount++;
+                if(rowCount == 6){ Console.WriteLine(); rowCount = 0; }
 
-                    if(rowCount == 6){ Console.WriteLine(); rowCount = 0; }
-
-                }
             }
-
-
-
-
-
-
-
-
-
         }
 
 
@@ -59,51 +42,60 @@ namespace Arch_VaderData.Helpers
 
 
 
-
-
-
-        public static List<(DateTime, double, double)> DataForSorting(string location)
-        {
-            List<(DateTime date, double temp, double humi)> allDayData = new List<(DateTime, double, double)>();
-
-            DateTime dateTime = new DateTime(2016, 06, 01);
-            DateTime dateTimeEnd = new DateTime(2016, 12, 24);
-
-            while (dateTime != dateTimeEnd)
-            {
-                if (Models.Dictionary.Data.TryGetValue(dateTime, out var dayData))
-                {
-
-                    if (location == "Inside")
-                    {
-                        var insideData = dayData.Item1;
-
-                        double dayTemp = insideData.AvgTemp;
-                        double dayHum = insideData.AvgHum;
-
-                        allDayData.Add((dateTime, dayTemp, dayHum));
-                    }
-
-                    else
-                    {
-                        var outsideData = dayData.Item2;
-
-                        double dayTemp = outsideData.AvgTemp;
-                        double dayHum = outsideData.AvgHum;
-
-                        allDayData.Add((dateTime, dayTemp, dayHum));
-                    }
-                }
-
-                dateTime = dateTime.AddDays(1);
-            }
-
-            return allDayData;
-
-
-
-
-        }
 
     }
+
+
+
+
+
+
+
+
+
+
+
+    public static List<(DateTime, double, double)> DataForSorting(string location)
+    {
+        List<(DateTime date, double temp, double humi)> allDayData = new List<(DateTime, double, double)>();
+
+        DateTime dateTime = new DateTime(2016, 06, 01);
+        DateTime dateTimeEnd = new DateTime(2016, 12, 24);
+
+        while (dateTime != dateTimeEnd)
+        {
+            if (Models.Dictionary.Data.TryGetValue(dateTime, out var dayData))
+            {
+
+                if (location == "Inside")
+                {
+                    var insideData = dayData.Item1;
+
+                    double dayTemp = insideData.AvgTemp;
+                    double dayHum = insideData.AvgHum;
+
+                    allDayData.Add((dateTime, dayTemp, dayHum));
+                }
+
+                else
+                {
+                    var outsideData = dayData.Item2;
+
+                    double dayTemp = outsideData.AvgTemp;
+                    double dayHum = outsideData.AvgHum;
+
+                    allDayData.Add((dateTime, dayTemp, dayHum));
+                }
+            }
+
+            dateTime = dateTime.AddDays(1);
+        }
+
+        return allDayData;
+
+
+
+
+    }
+
 }
