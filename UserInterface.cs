@@ -110,8 +110,10 @@ public static class UserInterface
                         DataInOrder.TempOrHumidInOrder("Outside", true);
                         break;
                     case Menues.Outdoor.Meterological_autumn:
+                        DateTime höst = GetSeason.CalculateSeason(10);
                         break;
                     case Menues.Outdoor.Meterological_winter:
+                        DateTime vinter = GetSeason.CalculateSeason(0);
                         break;
                 }
             }
