@@ -2,59 +2,18 @@
 
 internal class DataInOrder
 {
-
-    public static void TempOrHumidInOrder(string location, bool humidValue)
+    public static List<(DateTime date, double temp, double humi)> TempOrHumidInOrder(string location, bool humidValue)
     {
         List<(DateTime date, double temp, double humi)> allDayData = DataInOrder.DataForSorting(location);
-
-        int rowCount = 0;
-
-
         if (humidValue)
         {
-            var sortedDataInHum = allDayData.OrderBy(x => x.humi).ToList();
-
-            foreach (var date in sortedDataInHum)
-            {
-                Console.Write($"{date.date.ToString("yyyy-MM-dd")}: {date.humi}\t");
-                rowCount++;
-                if (rowCount == 6) { Console.WriteLine(); rowCount = 0; }
-            }
+            return allDayData.OrderBy(x => x.humi).ToList();
         }
         else
         {
-            var sortedDataInTemp = allDayData.OrderByDescending(x => x.temp).ToList();
-
-            foreach (var date in sortedDataInTemp)
-            {
-                Console.Write($"{date.date.ToString("yyyy-MM-dd")}: {date.temp}\t");
-                rowCount++;
-
-                if(rowCount == 6){ Console.WriteLine(); rowCount = 0; }
-
-            }
+            return allDayData.OrderByDescending(x => x.temp).ToList();
         }
-
-
-
-
-
-
-
-
-
     }
-
-
-
-
-
-
-
-
-
-
-
     public static List<(DateTime, double, double)> DataForSorting(string location)
     {
         List<(DateTime date, double temp, double humi)> allDayData = new List<(DateTime, double, double)>();
@@ -66,7 +25,6 @@ internal class DataInOrder
         {
             if (Models.Dictionary.Data.TryGetValue(dateTime, out var dayData))
             {
-
                 if (location == "Inside")
                 {
                     var insideData = dayData.Item1;
@@ -76,7 +34,6 @@ internal class DataInOrder
 
                     allDayData.Add((dateTime, dayTemp, dayHum));
                 }
-
                 else
                 {
                     var outsideData = dayData.Item2;
@@ -87,15 +44,8 @@ internal class DataInOrder
                     allDayData.Add((dateTime, dayTemp, dayHum));
                 }
             }
-
             dateTime = dateTime.AddDays(1);
         }
-
         return allDayData;
-
-
-
-
     }
-
 }

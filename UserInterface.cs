@@ -18,7 +18,7 @@ public static class UserInterface
         _dataStatus = new Window("Data status", 40, 0, Dictionary.GetDataStatus());
         _outdoorMenu = new Window("Outdoor data", 0, 0, GetMenuItems<Menues.Outdoor>());
         _indoorMenu = new Window("Indoor data", 0, 0, GetMenuItems<Menues.Indoor>());
-        _meterologicalWinter = new Window("Meterological winter", 40, 6, new List<string> {"Not computed"});
+        _meterologicalWinter = new Window("Meterological winter", 40, 6, new List<string> { "Not computed" });
         _meterologicalAutumn = new Window("Meterological autumn", 40, 12, new List<string> { "Not computed" });
     }
     public static void StartMenu()
@@ -116,10 +116,10 @@ public static class UserInterface
                         Console.WriteLine(data);
                         break;
                     case Menues.Outdoor.Show_warmest_to_coldest:
-                        DataInOrder.TempOrHumidInOrder("Outside", false);
+                        ShowData(DataInOrder.TempOrHumidInOrder("Outside", false), true);
                         break;
                     case Menues.Outdoor.Show_driest_to_most_humid:
-                        DataInOrder.TempOrHumidInOrder("Outside", true);
+                        ShowData(DataInOrder.TempOrHumidInOrder("Outside", true), false);
                         break;
                     case Menues.Outdoor.Meterological_autumn:
                         DateTime höst = GetSeason.CalculateSeason(10);
@@ -131,6 +131,38 @@ public static class UserInterface
             }
         }
     }
+
+    private static void ShowData(List<(DateTime date, double temp, double humi)> list, bool willShowTemp)
+    {
+        int rowCount = 0;
+        if (willShowTemp)
+        {
+            foreach (var date in list)
+            {
+                Console.Write($"{date.date.ToString("yyyy-MM-dd")}: {date.humi}%\t");
+                rowCount++;
+                if (rowCount == 6)
+                {
+                    Console.WriteLine();
+                    rowCount = 0;
+                }
+            }
+        }
+        else
+        {
+            foreach (var date in list)
+            {
+                Console.Write($"{date.date.ToString("yyyy-MM-dd")}: {date.temp}°C\t");
+                rowCount++;
+                if (rowCount == 6)
+                {
+                    Console.WriteLine();
+                    rowCount = 0;
+                }
+            }
+        }
+    }
+
     private static bool TryParseInput<T>(out T input) where T : struct
     {
         var rawInput = Console.ReadKey(true).KeyChar.ToString();
