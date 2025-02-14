@@ -123,7 +123,8 @@ public static class UserInterface
                         break;
                     case Menues.Outdoor.Show_mold_risk_for_date:
                         data = AvgTemps.AvgTempDay("Outside");
-                        Mold
+                        var moldRisk = MoldRiskHeatMap.CalculateMoldRisk(data.Temperature, data.Humidity);
+                        Console.WriteLine($"Mold risk: {moldRisk}% {data.Temperature:f1}°C, {data.Humidity}% RH");
                         break;
                     case Menues.Outdoor.Meterological_autumn:
                         DateTime autumnDate = GetSeason.CalculateSeason(10);
