@@ -113,13 +113,16 @@ public static class UserInterface
                         break;
                     case Menues.Outdoor.Search_date:
                         var data = AvgTemps.AvgTempDay("Outside");
-                        Console.WriteLine(data);
+                        Console.WriteLine($"{data.Temperature:f1}°C, {data.Humidity}% RH");
                         break;
                     case Menues.Outdoor.Show_warmest_to_coldest:
                         ShowData(DataInOrder.TempOrHumidInOrder("Outside", false), true);
                         break;
                     case Menues.Outdoor.Show_driest_to_most_humid:
                         ShowData(DataInOrder.TempOrHumidInOrder("Outside", true), false);
+                        break;
+                    case Menues.Outdoor.Show_mold_risk:
+                        data = AvgTemps.AvgTempDay("Outside");
                         break;
                     case Menues.Outdoor.Meterological_autumn:
                         DateTime autumnDate = GetSeason.CalculateSeason(10);
