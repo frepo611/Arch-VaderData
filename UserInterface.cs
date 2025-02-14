@@ -82,7 +82,7 @@ public static class UserInterface
                     case Menues.Indoor.Back:
                         StartMenu();
                         break;
-                    case Menues.Indoor.Search_date:
+                    case Menues.Indoor.Show_measurement_for_date:
                         AvgTemps.AvgTempDay("Inside");
                         break;
                     case Menues.Indoor.Show_warmest_to_coldest:
@@ -91,7 +91,7 @@ public static class UserInterface
                     case Menues.Indoor.Show_driest_to_most_humid:
                         DataInOrder.TempOrHumidInOrder("Inside", true);
                         break;
-                    case Menues.Indoor.Show_mold_risk:
+                    case Menues.Indoor.Show_mold_risk_for_date:
                         break;
                     case Menues.Indoor.Show_open_balcony_door_times:
                         break;
@@ -111,7 +111,7 @@ public static class UserInterface
                     case Menues.Outdoor.Back:
                         StartMenu();
                         break;
-                    case Menues.Outdoor.Search_date:
+                    case Menues.Outdoor.Show_measurement_for_date:
                         var data = AvgTemps.AvgTempDay("Outside");
                         Console.WriteLine($"{data.Temperature:f1}°C, {data.Humidity}% RH");
                         break;
@@ -121,8 +121,9 @@ public static class UserInterface
                     case Menues.Outdoor.Show_driest_to_most_humid:
                         ShowData(DataInOrder.TempOrHumidInOrder("Outside", false), true);
                         break;
-                    case Menues.Outdoor.Show_mold_risk:
+                    case Menues.Outdoor.Show_mold_risk_for_date:
                         data = AvgTemps.AvgTempDay("Outside");
+                        Mold
                         break;
                     case Menues.Outdoor.Meterological_autumn:
                         DateTime autumnDate = GetSeason.CalculateSeason(10);
