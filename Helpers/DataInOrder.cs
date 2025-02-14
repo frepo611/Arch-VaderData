@@ -23,7 +23,7 @@ internal class DataInOrder
 
         while (dateTime != dateTimeEnd)
         {
-            if (Models.Dictionary.Data.TryGetValue(dateTime, out var dayData))
+            if (Models.WeatherData.Data.TryGetValue(dateTime, out var dayData))
             {
                 if (location == "Inside")
                 {

@@ -15,7 +15,7 @@ public static class UserInterface
     {
         Console.CursorVisible = false;
         _mainMenu = new Window("Main menu", 0, 0, GetMenuItems<Menues.Main>());
-        _dataStatus = new Window("Data status", 40, 0, Dictionary.GetDataStatus());
+        _dataStatus = new Window("Data status", 40, 0, WeatherData.GetDataStatus());
         _outdoorMenu = new Window("Outdoor data", 0, 0, GetMenuItems<Menues.Outdoor>());
         _indoorMenu = new Window("Indoor data", 0, 0, GetMenuItems<Menues.Indoor>());
         _meterologicalWinter = new Window("Meterological winter", 40, 6, new List<string> { "Not computed" });
@@ -45,7 +45,7 @@ public static class UserInterface
                     case Menues.Main.Read_data:
                         Console.Clear();
                         GetData.ReadAllData();
-                        _dataStatus.UpdateTextRows(Dictionary.GetDataStatus());
+                        _dataStatus.UpdateTextRows(WeatherData.GetDataStatus());
                         StartMenu();
                         break;
                     case Menues.Main.Outdoor_data:
@@ -116,10 +116,10 @@ public static class UserInterface
                         Console.WriteLine($"{data.Temperature:f1}°C, {data.Humidity}% RH");
                         break;
                     case Menues.Outdoor.Show_warmest_to_coldest:
-                        ShowData(DataInOrder.TempOrHumidInOrder("Outside", false), true);
+                        ShowData(DataInOrder.TempOrHumidInOrder("Outside", true), false);
                         break;
                     case Menues.Outdoor.Show_driest_to_most_humid:
-                        ShowData(DataInOrder.TempOrHumidInOrder("Outside", true), false);
+                        ShowData(DataInOrder.TempOrHumidInOrder("Outside", false), true);
                         break;
                     case Menues.Outdoor.Show_mold_risk:
                         data = AvgTemps.AvgTempDay("Outside");

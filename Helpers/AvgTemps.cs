@@ -40,7 +40,7 @@ namespace Arch_VaderData.Helpers
             {
                 DateTime dateInput = CheckFormat();
 
-                if (Models.Dictionary.Data.TryGetValue(dateInput, out var dayData))
+                if (Models.WeatherData.Data.TryGetValue(dateInput, out var dayData))
                 {
                     if (location == "Inside")
                     {

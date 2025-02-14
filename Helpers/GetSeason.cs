@@ -16,7 +16,7 @@ namespace Arch_VaderData.Helpers
 
             while (dateTime != dateTimeEnd)
             {
-                if (Models.Dictionary.Data.TryGetValue(dateTime, out var dayData))
+                if (Models.WeatherData.Data.TryGetValue(dateTime, out var dayData))
                 {
                     if (dayData.Item2.AvgTemp <= tempToCheck)
                     {
@@ -24,7 +24,7 @@ namespace Arch_VaderData.Helpers
                         int dayTempCounter = 0;
                         for (int i = 0; i < 5; i++)
                         {
-                            var dayToCheck = Models.Dictionary.Data[dateCounter];
+                            var dayToCheck = Models.WeatherData.Data[dateCounter];
 
                             if (dayToCheck.Item2.AvgTemp <= tempToCheck)
                             {

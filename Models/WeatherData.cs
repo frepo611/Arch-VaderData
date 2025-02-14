@@ -1,6 +1,6 @@
 ﻿namespace Arch_VaderData.Models;
 
-internal static class Dictionary
+internal static class WeatherData
 {
     public static Dictionary<DateTime, (Inside?, Outside)> Data { get; } = new Dictionary<DateTime, (Inside?, Outside?)>();
     public static List<String> GetDataStatus()
