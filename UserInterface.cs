@@ -187,4 +187,8 @@ public static class UserInterface
         }
         return results;
     }
+    static void UpdateTextRows(this Window window, List<string> newTextRows)
+    {
+        window.TextRows = newTextRows;
+    }
 }
