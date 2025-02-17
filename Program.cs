@@ -6,11 +6,9 @@ internal class Program
 {
     static void Main()
     {
-        GetData.ReadAllData();
-        DataInOrder.AvgAMonth("Inside");
 
 
-        // UserInterface.StartMenu();
+        UserInterface.StartMenu();
 
 
 
