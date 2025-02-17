@@ -49,26 +49,36 @@ public static class UserInterface
                         StartMenu();
                         break;
                     case Menues.Main.Outdoor_data:
-                        Console.Clear();
-                        _dataStatus.Draw();
-                        _outdoorMenu.Draw();
-                        _meterologicalWinter.Draw();
-                        _meterologicalAutumn.Draw();
-                        SelectOutdoorMenuItem();
+                        DrawOutdoorMenu();
                         break;
                     case Menues.Main.Indoor_data:
-                        Console.Clear();
-                        _dataStatus.Draw();
-                        _indoorMenu.Draw();
-                        _meterologicalWinter.Draw();
-                        _meterologicalAutumn.Draw();
-                        SelectIndoorMenuItem();
+                        DrawIndoorMenu();
                         break;
                     case Menues.Main.Write_file:
                         break;
                 }
             }
         }
+    }
+
+    private static void DrawIndoorMenu()
+    {
+        Console.Clear();
+        _dataStatus.Draw();
+        _indoorMenu.Draw();
+        _meterologicalWinter.Draw();
+        _meterologicalAutumn.Draw();
+        SelectIndoorMenuItem();
+    }
+
+    private static void DrawOutdoorMenu()
+    {
+        Console.Clear();
+        _dataStatus.Draw();
+        _outdoorMenu.Draw();
+        _meterologicalWinter.Draw();
+        _meterologicalAutumn.Draw();
+        SelectOutdoorMenuItem(); ;
     }
 
     private static void SelectIndoorMenuItem()
@@ -86,10 +96,14 @@ public static class UserInterface
                         AvgTemps.AvgTempDay("Inside");
                         break;
                     case Menues.Indoor.Show_warmest_to_coldest:
-                        DataInOrder.TempOrHumidInOrder("Inside", false);
+                        Console.WriteLine("Warmest to coldest days indoors:\n");
+                        ShowData(DataInOrder.TempOrHumidInOrder("Inside", false), false);
+                        DrawIndoorMenu();
                         break;
                     case Menues.Indoor.Show_driest_to_most_humid:
-                        DataInOrder.TempOrHumidInOrder("Inside", true);
+                        Console.WriteLine("Driest to most humid days indoors:\n");
+                        ShowData(DataInOrder.TempOrHumidInOrder("Inside", true), true);
+                        DrawIndoorMenu();
                         break;
                     case Menues.Indoor.Show_mold_risk_for_date:
                         break;
@@ -114,12 +128,19 @@ public static class UserInterface
                     case Menues.Outdoor.Show_measurement_for_date:
                         var data = AvgTemps.AvgTempDay("Outside");
                         Console.WriteLine($"{data.Temperature:f1}°C, {data.Humidity}% RH");
+                        Console.WriteLine("Press key");
+                        Console.ReadKey();
+                        DrawOutdoorMenu();
                         break;
                     case Menues.Outdoor.Show_warmest_to_coldest:
-                        ShowData(DataInOrder.TempOrHumidInOrder("Outside", true), false);
+                        Console.WriteLine("Warmest to coldest days:\n");
+                        ShowData(DataInOrder.TempOrHumidInOrder("Outside", false), false);
+                        DrawOutdoorMenu();
                         break;
                     case Menues.Outdoor.Show_driest_to_most_humid:
-                        ShowData(DataInOrder.TempOrHumidInOrder("Outside", false), true);
+                        Console.WriteLine("Driest to most humid days:\n");
+                        ShowData(DataInOrder.TempOrHumidInOrder("Outside", true), true);
+                        DrawOutdoorMenu();
                         break;
                     case Menues.Outdoor.Show_mold_risk_for_date:
                         data = AvgTemps.AvgTempDay("Outside");
@@ -128,7 +149,7 @@ public static class UserInterface
                         break;
                     case Menues.Outdoor.Meterological_autumn:
                         DateTime autumnDate = GetSeason.CalculateSeason(10);
-                        _meterologicalAutumn.UpdateTextRows(new List<string> {autumnDate.ToString()});
+                        _meterologicalAutumn.UpdateTextRows(new List<string> { autumnDate.ToString() });
                         _meterologicalAutumn.Draw();
                         break;
                     case Menues.Outdoor.Meterological_winter:
@@ -161,7 +182,7 @@ public static class UserInterface
         {
             foreach (var date in list)
             {
-                Console.Write($"{date.date.ToString("yyyy-MM-dd"),-12}: {date.temp,-5:f1}°C ");
+                Console.Write($"{date.date.ToString("yyyy-MM-dd")}: {date.temp,-4:f1}°C ");
                 rowCount++;
                 if (rowCount == 6)
                 {
@@ -170,6 +191,9 @@ public static class UserInterface
                 }
             }
         }
+        Console.WriteLine();
+        Console.WriteLine("Press key");
+        Console.ReadKey();
     }
 
     private static bool TryParseInput<T>(out T input) where T : struct
