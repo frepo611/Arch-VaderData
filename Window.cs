@@ -1,56 +1,56 @@
-﻿using System.Drawing;
-namespace Arch_VaderData;
+﻿namespace Arch_VaderData;
+
 public class Window
 {
-    public string Header { get; }
-    public int Left { get; }
-    public int Top { get; }
-    public List<string> TextRows { get; }
-    public Point LowerRightCorner { get; set; }
+    public string Header { get; set; }
+    public int Left { get; set; }
+    public int Top { get; set; }
+    public List<string> TextRows { get; set; }
 
     public Window(string header, int left, int top, List<string> textRows)
     {
-        Header = header ?? string.Empty;
+        Header = header;
         Left = left;
         Top = top;
-        TextRows = textRows ?? new List<string>();
+        TextRows = textRows;
     }
 
     public void Draw()
     {
-        var width = TextRows.OrderByDescending(s => s.Length).FirstOrDefault()?.Length ?? 0;
+        var width = TextRows.OrderByDescending(s => s.Length).FirstOrDefault().Length;
 
         // Kolla om Header är längre än det längsta ordet i listan
         if (width < Header.Length + 4)
         {
             width = Header.Length + 4;
-        }
+        };
 
         // Rita Header
         Console.SetCursorPosition(Left, Top);
-        if (!string.IsNullOrEmpty(Header))
+        if (Header != "")
         {
             Console.Write('┌' + " ");
             Console.ForegroundColor = ConsoleColor.DarkGray;
             Console.Write(Header);
             Console.ForegroundColor = ConsoleColor.White;
-            Console.Write(" " + new string('─', width - Header.Length) + '┐');
+            Console.Write(" " + new String('─', width - Header.Length) + '┐');
         }
         else
         {
-            Console.Write('┌' + new string('─', width + 2) + '┐');
+            Console.Write('┌' + new String('─', width + 2) + '┐');
         }
 
         // Rita raderna i sträng-Listan
         for (int j = 0; j < TextRows.Count; j++)
         {
             Console.SetCursorPosition(Left, Top + j + 1);
-            Console.WriteLine('│' + " " + TextRows[j] + new string(' ', width - TextRows[j].Length + 1) + '│');
+            Console.WriteLine('│' + " " + TextRows[j] + new String(' ', width - TextRows[j].Length + 1) + '│');
         }
 
         // Rita undre delen av fönstret
         Console.SetCursorPosition(Left, Top + TextRows.Count + 1);
-        Console.Write('└' + new string('─', width + 2) + '┘');
+        Console.Write('└' + new String('─', width + 2) + '┘');
+
 
         // Kolla vilket som är den nedersta posotion, i alla fönster, som ritats ut
         if (Lowest.LowestPosition < Top + TextRows.Count + 2)
@@ -59,21 +59,6 @@ public class Window
         }
 
         Console.SetCursorPosition(0, Lowest.LowestPosition);
-
-        Point lowerRightCorner = new Point(Left + width + 4, Top + TextRows.Count + 2);
-        LowerRightCorner = lowerRightCorner;
-    }
-
-    public void UpdateTextRows(List<string> newTextRows)
-    {
-        TextRows.Clear();
-        TextRows.AddRange(newTextRows);
-    }
-
-    public class Coordinate
-    {
-        public int Left { get; set; }
-        public int Top { get; set; }
     }
 }
 

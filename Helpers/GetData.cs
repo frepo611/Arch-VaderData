@@ -69,7 +69,7 @@ namespace Arch_VaderData
                         Models.Inside inside = new Models.Inside(inTemp, inHumi);
                         Models.Outside outside = new Models.Outside(outTemp,outHumi);
 
-                        Models.Dictionary.Data.Add(dateTime, (inside,outside));                      
+                        Models.WeatherData.Data.Add(dateTime, (inside,outside));                      
                     }
                     dateTime = dateTime.AddDays(1);
                 }

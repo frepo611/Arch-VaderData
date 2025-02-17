@@ -15,7 +15,7 @@ public static class UserInterface
     {
         Console.CursorVisible = false;
         _mainMenu = new Window("Main menu", 0, 0, GetMenuItems<Menues.Main>());
-        _dataStatus = new Window("Data status", 40, 0, Dictionary.GetDataStatus());
+        _dataStatus = new Window("Data status", 40, 0, WeatherData.GetDataStatus());
         _outdoorMenu = new Window("Outdoor data", 0, 0, GetMenuItems<Menues.Outdoor>());
         _indoorMenu = new Window("Indoor data", 0, 0, GetMenuItems<Menues.Indoor>());
         _meterologicalWinter = new Window("Meterological winter", 40, 6, new List<string> { "Not computed" });
@@ -45,7 +45,7 @@ public static class UserInterface
                     case Menues.Main.Read_data:
                         Console.Clear();
                         GetData.ReadAllData();
-                        _dataStatus.UpdateTextRows(Dictionary.GetDataStatus());
+                        _dataStatus.UpdateTextRows(WeatherData.GetDataStatus());
                         StartMenu();
                         break;
                     case Menues.Main.Outdoor_data:
@@ -82,7 +82,7 @@ public static class UserInterface
                     case Menues.Indoor.Back:
                         StartMenu();
                         break;
-                    case Menues.Indoor.Search_date:
+                    case Menues.Indoor.Show_measurement_for_date:
                         AvgTemps.AvgTempDay("Inside");
                         break;
                     case Menues.Indoor.Show_warmest_to_coldest:
@@ -91,7 +91,7 @@ public static class UserInterface
                     case Menues.Indoor.Show_driest_to_most_humid:
                         DataInOrder.TempOrHumidInOrder("Inside", true);
                         break;
-                    case Menues.Indoor.Show_mold_risk:
+                    case Menues.Indoor.Show_mold_risk_for_date:
                         break;
                     case Menues.Indoor.Show_open_balcony_door_times:
                         break;
@@ -111,18 +111,20 @@ public static class UserInterface
                     case Menues.Outdoor.Back:
                         StartMenu();
                         break;
-                    case Menues.Outdoor.Search_date:
+                    case Menues.Outdoor.Show_measurement_for_date:
                         var data = AvgTemps.AvgTempDay("Outside");
                         Console.WriteLine($"{data.Temperature:f1}°C, {data.Humidity}% RH");
                         break;
                     case Menues.Outdoor.Show_warmest_to_coldest:
-                        ShowData(DataInOrder.TempOrHumidInOrder("Outside", false), true);
-                        break;
-                    case Menues.Outdoor.Show_driest_to_most_humid:
                         ShowData(DataInOrder.TempOrHumidInOrder("Outside", true), false);
                         break;
-                    case Menues.Outdoor.Show_mold_risk:
+                    case Menues.Outdoor.Show_driest_to_most_humid:
+                        ShowData(DataInOrder.TempOrHumidInOrder("Outside", false), true);
+                        break;
+                    case Menues.Outdoor.Show_mold_risk_for_date:
                         data = AvgTemps.AvgTempDay("Outside");
+                        var moldRisk = MoldRiskHeatMap.CalculateMoldRisk(data.Temperature, data.Humidity);
+                        Console.WriteLine($"Mold risk: {moldRisk}% {data.Temperature:f1}°C, {data.Humidity}% RH");
                         break;
                     case Menues.Outdoor.Meterological_autumn:
                         DateTime autumnDate = GetSeason.CalculateSeason(10);
@@ -184,5 +186,9 @@ public static class UserInterface
             results.Add($"{(int)menuItem}. {menuItem.ToString()?.Replace('_', ' ')}");
         }
         return results;
+    }
+    static void UpdateTextRows(this Window window, List<string> newTextRows)
+    {
+        window.TextRows = newTextRows;
     }
 }
