@@ -2,9 +2,9 @@
 
 internal class DataInOrder
 {
-    public static List<(DateTime date, double temp, double humi)> TempOrHumidInOrder(string location, bool humidValue)
+    public static List<(DateTime date, double temp, double humi, double mold)> TempOrHumidInOrder(string location, bool humidValue)
     {
-        List<(DateTime date, double temp, double humi)> allDayData = DataInOrder.DataForSorting(location);
+        List<(DateTime date, double temp, double humi, double mold)> allDayData = DataInOrder.DataForSorting(location);
         if (humidValue)
         {
             return allDayData.OrderBy(x => x.humi).ToList();
@@ -14,9 +14,9 @@ internal class DataInOrder
             return allDayData.OrderByDescending(x => x.temp).ToList();
         }
     }
-    public static List<(DateTime, double, double)> DataForSorting(string location)
+    public static List<(DateTime, double, double, double)> DataForSorting(string location)
     {
-        List<(DateTime date, double temp, double humi)> allDayData = new List<(DateTime, double, double)>();
+        List<(DateTime date, double temp, double humi, double mold)> allDayData = new List<(DateTime, double, double,double)>();
 
         DateTime dateTime = new DateTime(2016, 06, 01);
         DateTime dateTimeEnd = new DateTime(2016, 12, 24);
@@ -31,8 +31,9 @@ internal class DataInOrder
 
                     double dayTemp = insideData.AvgTemp;
                     double dayHum = insideData.AvgHum;
+                    double dayMold = MoldRiskHeatMap.CalculateMoldRisk(dayTemp, dayHum);
 
-                    allDayData.Add((dateTime, dayTemp, dayHum));
+                    allDayData.Add((dateTime, dayTemp, dayHum,dayMold));
                 }
                 else
                 {
@@ -40,8 +41,9 @@ internal class DataInOrder
 
                     double dayTemp = outsideData.AvgTemp;
                     double dayHum = outsideData.AvgHum;
+                    double dayMold = MoldRiskHeatMap.CalculateMoldRisk(dayTemp, dayHum);
 
-                    allDayData.Add((dateTime, dayTemp, dayHum));
+                    allDayData.Add((dateTime, dayTemp, dayHum,dayMold));
                 }
             }
             dateTime = dateTime.AddDays(1);
@@ -50,12 +52,12 @@ internal class DataInOrder
     }
 
 
-    public static List<(string, double, double)> AvgAMonth(string location)
+    public static List<(string, double, double, double)> AvgAMonth(string location)
     {
         DateTime dateTime = new DateTime(2016, 06, 01);
 
-        List<(DateTime date, double temp, double humi)> allDayData = DataForSorting(location);
-        List<(string month, double temp, double humi)> allMonthData = new List<(string date, double temp, double humi)>();
+        List<(DateTime date, double temp, double humi, double mold)> allDayData = DataForSorting(location);
+        List<(string month, double temp, double humi, double mold)> allMonthData = new List<(string date, double temp, double humi, double mold)>();
 
         while (dateTime.Year != 2017)
         {
@@ -65,17 +67,20 @@ internal class DataInOrder
             string month = dateTime.ToString("MMMM");
             double temp = 0;
             double humi = 0;
+            double mold = 0;
 
             foreach (var day in monthData)
             {
                 temp += day.temp;
                 humi += day.humi;
+                mold += day.mold;
             }
 
             temp = Math.Round(temp / monthData.Count(), 2);
             humi = Math.Round(humi / monthData.Count(), 0);
+            mold = Math.Round(mold / monthData.Count(), 0);
 
-            allMonthData.Add((month, temp, humi));
+            allMonthData.Add((month, temp, humi,mold));
 
             dateTime = dateTime.AddMonths(1);
         }

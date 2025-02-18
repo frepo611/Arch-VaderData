@@ -17,8 +17,8 @@ namespace Arch_VaderData.Helpers
             
 
             string data = "";
-            List<(string, double, double)> insideData = DataInOrder.AvgAMonth("Inside");
-            List<(string, double, double)> outsideData = DataInOrder.AvgAMonth("Outside");
+            List<(string, double, double, double)> insideData = DataInOrder.AvgAMonth("Inside");
+            List<(string, double, double, double)> outsideData = DataInOrder.AvgAMonth("Outside");
 
             MakeString(insideData,outsideData);
 
@@ -33,7 +33,7 @@ namespace Arch_VaderData.Helpers
 
         }
 
-        private static void MakeString(List<(string, double, double)> inside, List<(string, double, double)> outside)
+        private static void MakeString(List<(string, double, double, double)> inside, List<(string, double, double, double)> outside)
         {
             DateTime autumDate = GetSeason.CalculateSeason(10);
             DateTime winterDate = GetSeason.CalculateSeason(0);

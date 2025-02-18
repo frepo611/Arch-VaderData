@@ -162,7 +162,7 @@ public static class UserInterface
         }
     }
 
-    private static void ShowData(List<(DateTime date, double temp, double humi)> list, bool willShowTemp)
+    private static void ShowData(List<(DateTime date, double temp, double humi, double mold)> list, bool willShowTemp)
     {
         int rowCount = 0;
         if (willShowTemp)
