@@ -102,7 +102,11 @@ public static class UserInterface
                         StartMenu();
                         break;
                     case Menues.Indoor.Show_measurement_for_date:
-                        AvgTemps.AvgTempDay("Inside");
+                        var data = AvgTemps.AvgTempDay("Inside");
+                        Console.WriteLine($"{data.Temperature:f1}°C, {data.Humidity}% RH");
+                        Console.WriteLine("Press key");
+                        Console.ReadKey();
+                        DrawIndoorMenu();
                         break;
                     case Menues.Indoor.Show_warmest_to_coldest:
                         Console.WriteLine("Warmest to coldest days indoors:\n");
