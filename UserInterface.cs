@@ -44,7 +44,14 @@ public static class UserInterface
                         break;
                     case Menues.Main.Read_data:
                         Console.Clear();
-                        GetData.ReadAllData();
+                        try
+                        {
+                            GetData.ReadAllData();
+                        }
+                        catch 
+                        {
+                            Console.WriteLine("Data is already in use");
+                        }
                         _dataStatus.UpdateTextRows(WeatherData.GetDataStatus());
                         StartMenu();
                         break;
