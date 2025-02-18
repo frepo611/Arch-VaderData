@@ -14,6 +14,7 @@ public static class UserInterface
     private static Window _meterologicalAutumn;
     private static bool noData = true;
 
+
     static UserInterface()
     {
         Console.CursorVisible = false;
@@ -123,12 +124,17 @@ public static class UserInterface
                         }
                     case Menues.Inside.Show_warmest_to_coldest:
                         Console.WriteLine("Warmest to coldest days inside:\n");
-                        ShowData(DataInOrder.TempOrHumidInOrder("Inside", false, false), false);
+                        ShowData(DataInOrder.TempOrHumidInOrder("Inside", false, false), FormatTemp);
                         DrawInsideMenu();
                         break;
                     case Menues.Inside.Show_driest_to_most_humid:
                         Console.WriteLine("Driest to most humid days inside:\n");
-                        ShowData(DataInOrder.TempOrHumidInOrder("Inside", true, false), true);
+                        ShowData(DataInOrder.TempOrHumidInOrder("Inside", true, false), FormatHumidity);
+                        DrawInsideMenu();
+                        break;
+                    case Menues.Inside.Show_mold_risks_lowest_to_highests:
+                        Console.WriteLine("Lowest to highest moldrisk inside:\n");
+                        ShowData(DataInOrder.TempOrHumidInOrder("Inside", false, true), FormatMold);
                         DrawInsideMenu();
                         break;
                 }
@@ -164,18 +170,18 @@ public static class UserInterface
                         }
                     case Menues.Outside.Show_warmest_to_coldest:
                         Console.WriteLine("Warmest to coldest days:\n");
-                        ShowData(DataInOrder.TempOrHumidInOrder("Outside", false, false), false);
+                        ShowData(DataInOrder.TempOrHumidInOrder("Outside", false, false), FormatTemp);
                         DrawOutsideMenu();
                         break;
                     case Menues.Outside.Show_driest_to_most_humid:
                         Console.WriteLine("Driest to most humid days:\n");
-                        ShowData(DataInOrder.TempOrHumidInOrder("Outside", true, false), true);
+                        ShowData(DataInOrder.TempOrHumidInOrder("Outside", true, false), FormatHumidity);
                         DrawOutsideMenu();
                         break;
-                    
+
                     case Menues.Outside.Show_mold_risks_lowest_to_highests:
                         Console.WriteLine("Lowest to highest moldrisk:\n");
-                        ShowData(DataInOrder.TempOrHumidInOrder("Outside", false, true), true);
+                        ShowData(DataInOrder.TempOrHumidInOrder("Outside", false, true), FormatMold);
                         DrawOutsideMenu();
                         break;
                     case Menues.Outside.Meterological_autumn:
@@ -208,34 +214,33 @@ public static class UserInterface
             }
         }
     }
+    private delegate string DataFormatter((DateTime date, double temp, double humi, double mold) item);
 
-    private static void ShowData(List<(DateTime date, double temp, double humi, double mold)> list, bool willShowTemp)
+    private static string FormatTemp((DateTime date, double temp, double humi, double mold) item)
+    {
+        return $"{item.temp:f1}°C";
+    }
+    private static string FormatHumidity((DateTime date, double temp, double humi, double mold) item)
+    {
+        return $"{item.humi}% RH";
+    }
+    private static string FormatMold((DateTime date, double temp, double humi, double mold) item)
+    {
+        return $"{item.mold:f1}%";
+    }
+
+
+    private static void ShowData(List<(DateTime date, double temp, double humi, double mold)> list, DataFormatter dataFormatter)
     {
         int rowCount = 0;
-        if (willShowTemp)
+        foreach (var item in list)
         {
-            foreach (var date in list)
+            Console.Write($"{item.date.ToString("yyyy-MM-dd")}: {dataFormatter(item)} ");
+            rowCount++;
+            if (rowCount == 6)
             {
-                Console.Write($"{date.date.ToString("yyyy-MM-dd")}: {date.humi}%\t");
-                rowCount++;
-                if (rowCount == 6)
-                {
-                    Console.WriteLine();
-                    rowCount = 0;
-                }
-            }
-        }
-        else
-        {
-            foreach (var date in list)
-            {
-                Console.Write($"{date.date.ToString("yyyy-MM-dd")}: {date.temp,-4:f1}°C ");
-                rowCount++;
-                if (rowCount == 6)
-                {
-                    Console.WriteLine();
-                    rowCount = 0;
-                }
+                Console.WriteLine();
+                rowCount = 0;
             }
         }
         Console.WriteLine();

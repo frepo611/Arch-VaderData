@@ -8,7 +8,7 @@ public class Menues
         Read_data,
         Outside_data,
         Inside_data,
-        Write_file, // Att göra
+        Write_file,
     }
     public enum Outside
     {
