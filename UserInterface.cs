@@ -2,6 +2,8 @@
 
 using Arch_VaderData.Helpers;
 using Models;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+
 public static class UserInterface
 {
     private static Window _mainMenu;
@@ -93,7 +95,12 @@ public static class UserInterface
                         StartMenu();
                         break;
                     case Menues.Indoor.Show_measurement_for_date:
-                        AvgTemps.AvgTempDay("Inside");
+                        var data = AvgTemps.AvgTempDay("Inside");
+                        Console.WriteLine($"{data.Temperature:f1}°C, {data.Humidity}% RH");
+                        Console.WriteLine();
+                        Console.WriteLine("Press key...");
+                        Console.ReadKey();
+                        DrawIndoorMenu();
                         break;
                     case Menues.Indoor.Show_warmest_to_coldest:
                         Console.WriteLine("Warmest to coldest days indoors:\n");
@@ -106,6 +113,9 @@ public static class UserInterface
                         DrawIndoorMenu();
                         break;
                     case Menues.Indoor.Show_mold_risk_for_date:
+                        data = AvgTemps.AvgTempDay("Inside");
+                        var moldRisk = MoldRiskHeatMap.CalculateMoldRisk(data.Temperature, data.Humidity);
+                        Console.WriteLine($"Mold risk: {moldRisk}% {data.Temperature:f1}°C, {data.Humidity}% RH");
                         break;
                     case Menues.Indoor.Show_open_balcony_door_times:
                         break;
