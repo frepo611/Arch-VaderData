@@ -18,11 +18,11 @@ public static class UserInterface
     {
         Console.CursorVisible = false;
         _mainMenu = new Window("Main menu", 0, 0, GetMenuItems<Menues.Main>());
-        _dataStatus = new Window("Data status", 40, 0, WeatherData.GetDataStatus());
-        _outdoorMenu = new Window("Outdoor data", 0, 0, GetMenuItems<Menues.Outdoor>());
-        _indoorMenu = new Window("Indoor data", 0, 0, GetMenuItems<Menues.Indoor>());
-        _meterologicalWinter = new Window("Meterological winter", 40, 6, new List<string> { "Not computed" });
-        _meterologicalAutumn = new Window("Meterological autumn", 40, 12, new List<string> { "Not computed" });
+        _dataStatus = new Window("Data status", 45, 0, WeatherData.GetDataStatus());
+        _outdoorMenu = new Window("Outdoor data", 0, 0, GetMenuItems<Menues.Outside>());
+        _indoorMenu = new Window("Indoor data", 0, 0, GetMenuItems<Menues.Inside>());
+        _meterologicalWinter = new Window("Meterological winter", 45, 6, new List<string> { "Not computed" });
+        _meterologicalAutumn = new Window("Meterological autumn", 45, 12, new List<string> { "Not computed" });
     }
     public static void StartMenu()
     {
@@ -63,7 +63,7 @@ public static class UserInterface
                         DrawOutdoorMenu();
                         break;
                     case Menues.Main.Indoor_data:
-                        DrawIndoorMenu();
+                        DrawInsideMenu();
                         break;
                     case Menues.Main.Write_file:
                         CreateFile.FileCreator();
@@ -74,14 +74,14 @@ public static class UserInterface
         }
     }
 
-    private static void DrawIndoorMenu()
+    private static void DrawInsideMenu()
     {
         Console.Clear();
         _dataStatus.Draw();
         _indoorMenu.Draw();
         _meterologicalWinter.Draw();
         _meterologicalAutumn.Draw();
-        SelectIndoorMenuItem();
+        SelectInsideMenuItem();
     }
 
     private static void DrawOutdoorMenu()
@@ -89,30 +89,31 @@ public static class UserInterface
         Console.Clear();
         _dataStatus.Draw();
         _outdoorMenu.Draw();
-        _meterologicalWinter.Draw();
+        _meterologicalWinter
+            .Draw();
         _meterologicalAutumn.Draw();
-        SelectOutdoorMenuItem(); ;
+        SelectOutsideMenuItem();
     }
 
-    private static void SelectIndoorMenuItem()
+    private static void SelectInsideMenuItem()
     {
         while (true)
         {
-            if (TryParseInput(out Menues.Indoor choice))
+            if (TryParseInput(out Menues.Inside choice))
             {
                 switch (choice)
                 {
-                    case Menues.Indoor.Back:
+                    case Menues.Inside.Back:
                         StartMenu();
                         break;
-                    case Menues.Indoor.Show_measurement_for_date:
+                    case Menues.Inside.Show_measurement_for_date:
                         if (!noData)
                         {
                             var data = AvgTemps.AvgTempDay("Inside");
                             Console.WriteLine($"{data.Temperature:f1}°C, {data.Humidity}% RH");
                             Console.WriteLine("Press key");
                             Console.ReadKey();
-                            DrawIndoorMenu();
+                            DrawInsideMenu();
                             break;
                         }
                         else
@@ -120,37 +121,52 @@ public static class UserInterface
                             Console.WriteLine("There is no data");
                             break;
                         }
-                    case Menues.Indoor.Show_warmest_to_coldest:
-                        Console.WriteLine("Warmest to coldest days indoors:\n");
+                    case Menues.Inside.Show_warmest_to_coldest:
+                        Console.WriteLine("Warmest to coldest days inside:\n");
                         ShowData(DataInOrder.TempOrHumidInOrder("Inside", false, false), false);
-                        DrawIndoorMenu();
+                        DrawInsideMenu();
                         break;
-                    case Menues.Indoor.Show_driest_to_most_humid:
-                        Console.WriteLine("Driest to most humid days indoors:\n");
+                    case Menues.Inside.Show_driest_to_most_humid:
+                        Console.WriteLine("Driest to most humid days inside:\n");
                         ShowData(DataInOrder.TempOrHumidInOrder("Inside", true, false), true);
-                        DrawIndoorMenu();
+                        DrawInsideMenu();
                         break;
-                    case Menues.Indoor.Show_mold_risk_for_date:
+                    case Menues.Inside.Show_mold_risk_for_date:
+                        if (!noData)
+                        {
+                            var data = AvgTemps.AvgTempDay("Inside");
+                            var moldRisk = MoldRiskHeatMap.CalculateMoldRisk(data.Temperature, data.Humidity);
+                            Console.WriteLine($"Mold risk: {moldRisk}% {data.Temperature:f1}°C, {data.Humidity}% RH");
+                            Console.WriteLine("Press key");
+                            Console.ReadKey();
+                            DrawInsideMenu();
+                            break;
+                        }
+                        else
+                        {
+                            Console.WriteLine("There is no data");
+                            break;
+                        }
                         break;
-                    case Menues.Indoor.Show_open_balcony_door_times:
+                    case Menues.Inside.Show_open_balcony_door_times:
                         break;
                 }
             }
         }
     }
 
-    private static void SelectOutdoorMenuItem()
+    private static void SelectOutsideMenuItem()
     {
         while (true)
         {
-            if (TryParseInput(out Menues.Outdoor choice))
+            if (TryParseInput(out Menues.Outside choice))
             {
                 switch (choice)
                 {
-                    case Menues.Outdoor.Back:
+                    case Menues.Outside.Back:
                         StartMenu();
                         break;
-                    case Menues.Outdoor.Show_measurement_for_date:
+                    case Menues.Outside.Show_measurement_for_date:
                         if (!noData)
                         {
                             var data = AvgTemps.AvgTempDay("Outside");
@@ -165,17 +181,17 @@ public static class UserInterface
                             Console.WriteLine("There is no data");
                             break;
                         }
-                    case Menues.Outdoor.Show_warmest_to_coldest:
+                    case Menues.Outside.Show_warmest_to_coldest:
                         Console.WriteLine("Warmest to coldest days:\n");
                         ShowData(DataInOrder.TempOrHumidInOrder("Outside", false, false), false);
                         DrawOutdoorMenu();
                         break;
-                    case Menues.Outdoor.Show_driest_to_most_humid:
+                    case Menues.Outside.Show_driest_to_most_humid:
                         Console.WriteLine("Driest to most humid days:\n");
                         ShowData(DataInOrder.TempOrHumidInOrder("Outside", true, false), true);
                         DrawOutdoorMenu();
                         break;
-                    case Menues.Outdoor.Show_mold_risk_for_date:
+                    case Menues.Outside.Show_mold_risk_for_date:
                         if (!noData)
                         {
                             var data = AvgTemps.AvgTempDay("Outside");
@@ -188,7 +204,12 @@ public static class UserInterface
                             Console.WriteLine("There is no data");
                             break;
                         }
-                    case Menues.Outdoor.Meterological_autumn:
+                    case Menues.Outside.Show_mold_risks_lowest_to_highests:
+                        Console.WriteLine("Lowest to highest moldrisk:\n");
+                        ShowData(DataInOrder.TempOrHumidInOrder("Outside", false, true), true);
+                        DrawOutdoorMenu();
+                        break;
+                    case Menues.Outside.Meterological_autumn:
                         try
                         {
                             DateTime autumnDate = GetSeason.CalculateSeason(10);
@@ -201,7 +222,7 @@ public static class UserInterface
                             Console.WriteLine("No data to use");
                             break;
                         }
-                    case Menues.Outdoor.Meterological_winter:
+                    case Menues.Outside.Meterological_winter:
                         try
                         {
                             DateTime winterDate = GetSeason.CalculateSeason(0);
