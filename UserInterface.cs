@@ -55,6 +55,8 @@ public static class UserInterface
                         DrawIndoorMenu();
                         break;
                     case Menues.Main.Write_file:
+                        CreateFile.FileCreator();
+                        Console.WriteLine("Local file was created");
                         break;
                 }
             }
