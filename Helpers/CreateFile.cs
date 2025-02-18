@@ -37,7 +37,18 @@ namespace Arch_VaderData.Helpers
                     writer.WriteLine($"");
                 }
                 writer.WriteLine($"Höst började [{autumDate.ToString("yyyy-MM-dd")}]            Vinter började [{winterDate.ToString("yyyy-MM-dd")}]");
-                writer.WriteLine(" xxxxxx "); // Skriv mögel algo här
+                writer.WriteLine("\n[Mögel formel]\n" +
+                    "double RH_norm = Math.Max(0, Math.Min((RH - 75) / 25.0, 1));\n" +
+                    "double T_factor = 0;\r\n" +
+                    "if (T > 0 && T < 10)\r\n" +
+                    "T_factor = T / 10.0;\r\n" +
+                    "else if (T >= 10 && T <= 30)\r\n" +
+                    "T_factor = 1;\r\n" +
+                    "else if (T > 30 && T < 40)\r\n" +
+                    "T_factor = (40 - T) / 10.0;\r\n" +
+                    "else\r\n" +
+                    "T_factor = 0;\r\n" +
+                    "return 100 * RH_norm * T_factor; ");
                 writer.WriteLine("");
                 writer.WriteLine("");
             }
