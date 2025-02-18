@@ -8,8 +8,8 @@ public static class UserInterface
 {
     private static Window _mainMenu;
     private static Window _dataStatus;
-    private static Window _outdoorMenu;
-    private static Window _indoorMenu;
+    private static Window _outsideMenu;
+    private static Window _insideMenu;
     private static Window _meterologicalWinter;
     private static Window _meterologicalAutumn;
     private static bool noData = true;
@@ -19,8 +19,8 @@ public static class UserInterface
         Console.CursorVisible = false;
         _mainMenu = new Window("Main menu", 0, 0, GetMenuItems<Menues.Main>());
         _dataStatus = new Window("Data status", 45, 0, WeatherData.GetDataStatus());
-        _outdoorMenu = new Window("Outdoor data", 0, 0, GetMenuItems<Menues.Outside>());
-        _indoorMenu = new Window("Indoor data", 0, 0, GetMenuItems<Menues.Inside>());
+        _outsideMenu = new Window("Outside data", 0, 0, GetMenuItems<Menues.Outside>());
+        _insideMenu = new Window("Inside data", 0, 0, GetMenuItems<Menues.Inside>());
         _meterologicalWinter = new Window("Meterological winter", 45, 6, new List<string> { "Not computed" });
         _meterologicalAutumn = new Window("Meterological autumn", 45, 12, new List<string> { "Not computed" });
     }
@@ -59,10 +59,10 @@ public static class UserInterface
                         _dataStatus.UpdateTextRows(WeatherData.GetDataStatus());
                         StartMenu();
                         break;
-                    case Menues.Main.Outdoor_data:
-                        DrawOutdoorMenu();
+                    case Menues.Main.Outside_data:
+                        DrawOutsideMenu();
                         break;
-                    case Menues.Main.Indoor_data:
+                    case Menues.Main.Inside_data:
                         DrawInsideMenu();
                         break;
                     case Menues.Main.Write_file:
@@ -78,17 +78,17 @@ public static class UserInterface
     {
         Console.Clear();
         _dataStatus.Draw();
-        _indoorMenu.Draw();
+        _insideMenu.Draw();
         _meterologicalWinter.Draw();
         _meterologicalAutumn.Draw();
         SelectInsideMenuItem();
     }
 
-    private static void DrawOutdoorMenu()
+    private static void DrawOutsideMenu()
     {
         Console.Clear();
         _dataStatus.Draw();
-        _outdoorMenu.Draw();
+        _outsideMenu.Draw();
         _meterologicalWinter
             .Draw();
         _meterologicalAutumn.Draw();
@@ -129,7 +129,7 @@ public static class UserInterface
                     case Menues.Inside.Show_driest_to_most_humid:
                         Console.WriteLine("Driest to most humid days inside:\n");
                         ShowData(DataInOrder.TempOrHumidInOrder("Inside", true, false), true);
-                        DrawIndoorMenu();
+                        DrawInsideMenu();
                         break;
                 }
             }
@@ -154,7 +154,7 @@ public static class UserInterface
                             Console.WriteLine($"{data.Temperature:f1}°C, {data.Humidity}% RH");
                             Console.WriteLine("Press key");
                             Console.ReadKey();
-                            DrawOutdoorMenu();
+                            DrawOutsideMenu();
                             break;
                         }
                         else
@@ -165,36 +165,24 @@ public static class UserInterface
                     case Menues.Outside.Show_warmest_to_coldest:
                         Console.WriteLine("Warmest to coldest days:\n");
                         ShowData(DataInOrder.TempOrHumidInOrder("Outside", false, false), false);
-                        DrawOutdoorMenu();
+                        DrawOutsideMenu();
                         break;
                     case Menues.Outside.Show_driest_to_most_humid:
                         Console.WriteLine("Driest to most humid days:\n");
                         ShowData(DataInOrder.TempOrHumidInOrder("Outside", true, false), true);
-                        DrawOutdoorMenu();
+                        DrawOutsideMenu();
                         break;
-                    case Menues.Outside.Show_mold_risk_for_date:
-                        if (!noData)
-                        {
-                            var data = AvgTemps.AvgTempDay("Outside");
-                            var moldRisk = MoldRiskHeatMap.CalculateMoldRisk(data.Temperature, data.Humidity);
-                            Console.WriteLine($"Mold risk: {moldRisk}% {data.Temperature:f1}°C, {data.Humidity}% RH");
-                            break;
-                        }
-                        else
-                        {
-                            Console.WriteLine("There is no data");
-                            break;
-                        }
+                    
                     case Menues.Outside.Show_mold_risks_lowest_to_highests:
                         Console.WriteLine("Lowest to highest moldrisk:\n");
                         ShowData(DataInOrder.TempOrHumidInOrder("Outside", false, true), true);
-                        DrawOutdoorMenu();
+                        DrawOutsideMenu();
                         break;
                     case Menues.Outside.Meterological_autumn:
                         try
                         {
                             DateTime autumnDate = GetSeason.CalculateSeason(10);
-                            _meterologicalAutumn.UpdateTextRows(new List<string> { autumnDate.ToString() });
+                            _meterologicalAutumn.UpdateTextRows(new List<string> { autumnDate.ToString("yyyy-MM-dd") });
                             _meterologicalAutumn.Draw();
                             break;
                         }
@@ -207,7 +195,7 @@ public static class UserInterface
                         try
                         {
                             DateTime winterDate = GetSeason.CalculateSeason(0);
-                            _meterologicalWinter.UpdateTextRows(new List<string> { winterDate.ToString() });
+                            _meterologicalWinter.UpdateTextRows(new List<string> { winterDate.ToString("yyyy-MM-dd") });
                             _meterologicalWinter.Draw();
                             break;
                         }
