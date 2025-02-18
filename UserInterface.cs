@@ -129,7 +129,7 @@ public static class UserInterface
                     case Menues.Inside.Show_driest_to_most_humid:
                         Console.WriteLine("Driest to most humid days inside:\n");
                         ShowData(DataInOrder.TempOrHumidInOrder("Inside", true, false), true);
-                        DrawInsideMenu();
+                        DrawIndoorMenu();
                         break;
                 }
             }
