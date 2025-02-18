@@ -7,8 +7,11 @@ internal class Program
     static void Main()
     {
 
+        GetData.ReadAllData();
+        CreateFile.FileCreator();
 
-        UserInterface.StartMenu();
+
+        // UserInterface.StartMenu();
 
 
 

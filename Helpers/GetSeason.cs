@@ -41,10 +41,6 @@ namespace Arch_VaderData.Helpers
                                 break;
                             }
 
-
-
-                            
-
                         }
                         closestDayList.Add((dateTime, dayTempCounter));
 
