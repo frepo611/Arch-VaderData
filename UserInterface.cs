@@ -131,25 +131,6 @@ public static class UserInterface
                         ShowData(DataInOrder.TempOrHumidInOrder("Inside", true, false), true);
                         DrawInsideMenu();
                         break;
-                    case Menues.Inside.Show_mold_risk_for_date:
-                        if (!noData)
-                        {
-                            var data = AvgTemps.AvgTempDay("Inside");
-                            var moldRisk = MoldRiskHeatMap.CalculateMoldRisk(data.Temperature, data.Humidity);
-                            Console.WriteLine($"Mold risk: {moldRisk}% {data.Temperature:f1}°C, {data.Humidity}% RH");
-                            Console.WriteLine("Press key");
-                            Console.ReadKey();
-                            DrawInsideMenu();
-                            break;
-                        }
-                        else
-                        {
-                            Console.WriteLine("There is no data");
-                            break;
-                        }
-                        break;
-                    case Menues.Inside.Show_open_balcony_door_times:
-                        break;
                 }
             }
         }
