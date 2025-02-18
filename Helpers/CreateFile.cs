@@ -12,31 +12,13 @@ namespace Arch_VaderData.Helpers
     internal class CreateFile
     {
         static private string localFile = "WeatherData.text";
+
         public static void FileCreator()
-        {
-            
-
-            string data = "";
-            List<(string, double, double, double)> insideData = DataInOrder.AvgAMonth("Inside");
-            List<(string, double, double, double)> outsideData = DataInOrder.AvgAMonth("Outside");
-
-            MakeString(insideData,outsideData);
-
-
-
-            Console.WriteLine(data);
-
-
-
-
-
-
-        }
-
-        private static void MakeString(List<(string, double, double, double)> inside, List<(string, double, double, double)> outside)
         {
             DateTime autumDate = GetSeason.CalculateSeason(10);
             DateTime winterDate = GetSeason.CalculateSeason(0);
+            List<(string, double, double, double)> inside = DataInOrder.AvgAMonth("Inside");
+            List<(string, double, double, double)> outside = DataInOrder.AvgAMonth("Outside");
 
 
             using (StreamWriter writer = new StreamWriter(localFile, true))
@@ -55,7 +37,7 @@ namespace Arch_VaderData.Helpers
                     writer.WriteLine($"");
                 }
                 writer.WriteLine($"Höst började [{autumDate.ToString("yyyy-MM-dd")}]            Vinter började [{winterDate.ToString("yyyy-MM-dd")}]");
-                writer.WriteLine("");
+                writer.WriteLine(" xxxxxx "); // Skriv mögel algo här
                 writer.WriteLine("");
                 writer.WriteLine("");
             }
