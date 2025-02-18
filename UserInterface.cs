@@ -2,6 +2,8 @@
 
 using Arch_VaderData.Helpers;
 using Models;
+using System.Linq.Expressions;
+
 public static class UserInterface
 {
     private static Window _mainMenu;
@@ -10,6 +12,7 @@ public static class UserInterface
     private static Window _indoorMenu;
     private static Window _meterologicalWinter;
     private static Window _meterologicalAutumn;
+    private static bool noData = true;
 
     static UserInterface()
     {
@@ -47,8 +50,9 @@ public static class UserInterface
                         try
                         {
                             GetData.ReadAllData();
+                            noData = false;
                         }
-                        catch 
+                        catch
                         {
                             Console.WriteLine("Data is already in use");
                         }
@@ -63,7 +67,7 @@ public static class UserInterface
                         break;
                     case Menues.Main.Write_file:
                         CreateFile.FileCreator();
-                        Console.WriteLine("Local file was created");
+
                         break;
                 }
             }
@@ -102,12 +106,20 @@ public static class UserInterface
                         StartMenu();
                         break;
                     case Menues.Indoor.Show_measurement_for_date:
-                        var data = AvgTemps.AvgTempDay("Inside");
-                        Console.WriteLine($"{data.Temperature:f1}°C, {data.Humidity}% RH");
-                        Console.WriteLine("Press key");
-                        Console.ReadKey();
-                        DrawIndoorMenu();
-                        break;
+                        if (!noData)
+                        {
+                            var data = AvgTemps.AvgTempDay("Inside");
+                            Console.WriteLine($"{data.Temperature:f1}°C, {data.Humidity}% RH");
+                            Console.WriteLine("Press key");
+                            Console.ReadKey();
+                            DrawIndoorMenu();
+                            break;
+                        }
+                        else
+                        {
+                            Console.WriteLine("There is no data");
+                            break;
+                        }
                     case Menues.Indoor.Show_warmest_to_coldest:
                         Console.WriteLine("Warmest to coldest days indoors:\n");
                         ShowData(DataInOrder.TempOrHumidInOrder("Inside", false, false), false);
@@ -139,12 +151,20 @@ public static class UserInterface
                         StartMenu();
                         break;
                     case Menues.Outdoor.Show_measurement_for_date:
-                        var data = AvgTemps.AvgTempDay("Outside");
-                        Console.WriteLine($"{data.Temperature:f1}°C, {data.Humidity}% RH");
-                        Console.WriteLine("Press key");
-                        Console.ReadKey();
-                        DrawOutdoorMenu();
-                        break;
+                        if (!noData)
+                        {
+                            var data = AvgTemps.AvgTempDay("Outside");
+                            Console.WriteLine($"{data.Temperature:f1}°C, {data.Humidity}% RH");
+                            Console.WriteLine("Press key");
+                            Console.ReadKey();
+                            DrawOutdoorMenu();
+                            break;
+                        }
+                        else
+                        {
+                            Console.WriteLine("There is no data");
+                            break;
+                        }
                     case Menues.Outdoor.Show_warmest_to_coldest:
                         Console.WriteLine("Warmest to coldest days:\n");
                         ShowData(DataInOrder.TempOrHumidInOrder("Outside", false, false), false);
@@ -156,20 +176,44 @@ public static class UserInterface
                         DrawOutdoorMenu();
                         break;
                     case Menues.Outdoor.Show_mold_risk_for_date:
-                        data = AvgTemps.AvgTempDay("Outside");
-                        var moldRisk = MoldRiskHeatMap.CalculateMoldRisk(data.Temperature, data.Humidity);
-                        Console.WriteLine($"Mold risk: {moldRisk}% {data.Temperature:f1}°C, {data.Humidity}% RH");
-                        break;
+                        if (!noData)
+                        {
+                            var data = AvgTemps.AvgTempDay("Outside");
+                            var moldRisk = MoldRiskHeatMap.CalculateMoldRisk(data.Temperature, data.Humidity);
+                            Console.WriteLine($"Mold risk: {moldRisk}% {data.Temperature:f1}°C, {data.Humidity}% RH");
+                            break;
+                        }
+                        else
+                        {
+                            Console.WriteLine("There is no data");
+                            break;
+                        }
                     case Menues.Outdoor.Meterological_autumn:
-                        DateTime autumnDate = GetSeason.CalculateSeason(10);
-                        _meterologicalAutumn.UpdateTextRows(new List<string> { autumnDate.ToString() });
-                        _meterologicalAutumn.Draw();
-                        break;
+                        try
+                        {
+                            DateTime autumnDate = GetSeason.CalculateSeason(10);
+                            _meterologicalAutumn.UpdateTextRows(new List<string> { autumnDate.ToString() });
+                            _meterologicalAutumn.Draw();
+                            break;
+                        }
+                        catch
+                        {
+                            Console.WriteLine("No data to use");
+                            break;
+                        }
                     case Menues.Outdoor.Meterological_winter:
-                        DateTime winterDate = GetSeason.CalculateSeason(0);
-                        _meterologicalWinter.UpdateTextRows(new List<string> { winterDate.ToString() });
-                        _meterologicalWinter.Draw();
-                        break;
+                        try
+                        {
+                            DateTime winterDate = GetSeason.CalculateSeason(0);
+                            _meterologicalWinter.UpdateTextRows(new List<string> { winterDate.ToString() });
+                            _meterologicalWinter.Draw();
+                            break;
+                        }
+                        catch
+                        {
+                            Console.WriteLine("No data to use");
+                            break;
+                        }
                 }
             }
         }

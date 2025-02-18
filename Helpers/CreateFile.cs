@@ -15,8 +15,19 @@ namespace Arch_VaderData.Helpers
 
         public static void FileCreator()
         {
-            DateTime autumDate = GetSeason.CalculateSeason(10);
-            DateTime winterDate = GetSeason.CalculateSeason(0);
+            DateTime autumDate;
+            DateTime winterDate;
+
+            try
+            {
+                autumDate = GetSeason.CalculateSeason(10);
+                winterDate = GetSeason.CalculateSeason(0);
+            }
+            catch
+            {
+                Console.WriteLine("There is no data to use");
+                return;
+            }
             List<(string, double, double, double)> inside = DataInOrder.AvgAMonth("Inside");
             List<(string, double, double, double)> outside = DataInOrder.AvgAMonth("Outside");
 
@@ -52,6 +63,7 @@ namespace Arch_VaderData.Helpers
                 writer.WriteLine("");
                 writer.WriteLine("");
             }
+            Console.WriteLine("Local file was created");
         }
         static string CapitalizeFirstLetter(string input)
         {
