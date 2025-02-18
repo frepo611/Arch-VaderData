@@ -97,12 +97,12 @@ public static class UserInterface
                         break;
                     case Menues.Indoor.Show_warmest_to_coldest:
                         Console.WriteLine("Warmest to coldest days indoors:\n");
-                        ShowData(DataInOrder.TempOrHumidInOrder("Inside", false), false);
+                        ShowData(DataInOrder.TempOrHumidInOrder("Inside", false, false), false);
                         DrawIndoorMenu();
                         break;
                     case Menues.Indoor.Show_driest_to_most_humid:
                         Console.WriteLine("Driest to most humid days indoors:\n");
-                        ShowData(DataInOrder.TempOrHumidInOrder("Inside", true), true);
+                        ShowData(DataInOrder.TempOrHumidInOrder("Inside", true, false), true);
                         DrawIndoorMenu();
                         break;
                     case Menues.Indoor.Show_mold_risk_for_date:
@@ -134,12 +134,12 @@ public static class UserInterface
                         break;
                     case Menues.Outdoor.Show_warmest_to_coldest:
                         Console.WriteLine("Warmest to coldest days:\n");
-                        ShowData(DataInOrder.TempOrHumidInOrder("Outside", false), false);
+                        ShowData(DataInOrder.TempOrHumidInOrder("Outside", false, false), false);
                         DrawOutdoorMenu();
                         break;
                     case Menues.Outdoor.Show_driest_to_most_humid:
                         Console.WriteLine("Driest to most humid days:\n");
-                        ShowData(DataInOrder.TempOrHumidInOrder("Outside", true), true);
+                        ShowData(DataInOrder.TempOrHumidInOrder("Outside", true, false), true);
                         DrawOutdoorMenu();
                         break;
                     case Menues.Outdoor.Show_mold_risk_for_date:

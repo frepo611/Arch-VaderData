@@ -51,9 +51,11 @@ namespace Arch_VaderData.Helpers
                     writer.WriteLine($"[{monthOutside}]");
                     writer.WriteLine($"Temperatur:   {inside[i].Item2}°C     \t    {outside[i].Item2}°C");
                     writer.WriteLine($"Fuktighet:      {inside[i].Item3}%                   {outside[i].Item3}%");
+                    writer.WriteLine($"Mögel risk:      {inside[i].Item4}%                   {outside[i].Item4}%");
                     writer.WriteLine($"");
                 }
                 writer.WriteLine($"Höst började [{autumDate.ToString("yyyy-MM-dd")}]            Vinter började [{winterDate.ToString("yyyy-MM-dd")}]");
+                writer.WriteLine("");
                 writer.WriteLine("");
                 writer.WriteLine("");
             }

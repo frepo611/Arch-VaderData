@@ -2,12 +2,16 @@
 
 internal class DataInOrder
 {
-    public static List<(DateTime date, double temp, double humi, double mold)> TempOrHumidInOrder(string location, bool humidValue)
+    public static List<(DateTime date, double temp, double humi, double mold)> TempOrHumidInOrder(string location, bool humidValue, bool moldValue)
     {
         List<(DateTime date, double temp, double humi, double mold)> allDayData = DataInOrder.DataForSorting(location);
         if (humidValue)
         {
             return allDayData.OrderBy(x => x.humi).ToList();
+        }
+        else if (moldValue)
+        {
+            return allDayData.OrderBy(x => x.mold).ToList();
         }
         else
         {
