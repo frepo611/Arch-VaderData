@@ -1,0 +1,53 @@
+Data registrerad [2025-02-19 09:28:02]
+             [Inomhus]             [Utomhus]
+[Juni]
+Temperatur:   24,61°C     	    15,83°C
+Fuktighet:      29%                   49%
+Mögel risk:      0%                   7%
+
+[Juli]
+Temperatur:   26,16°C     	    20,07°C
+Fuktighet:      43%                   56%
+Mögel risk:      0%                   0%
+
+[Augusti]
+Temperatur:   25,48°C     	    17,44°C
+Fuktighet:      34%                   50%
+Mögel risk:      0%                   0%
+
+[September]
+Temperatur:   23,22°C     	    16,11°C
+Fuktighet:      41%                   60%
+Mögel risk:      0%                   0%
+
+[Oktober]
+Temperatur:   22,41°C     	    8,18°C
+Fuktighet:      27%                   64%
+Mögel risk:      0%                   1%
+
+[November]
+Temperatur:   22,77°C     	    3,85°C
+Fuktighet:      19%                   84%
+Mögel risk:      0%                   14%
+
+[December]
+Temperatur:   21,77°C     	    3,15°C
+Fuktighet:      16%                   78%
+Mögel risk:      0%                   9%
+
+Höst började [2016-10-04]            Vinter började [2016-11-06]
+
+[Mögel formel]
+double RH_norm = Math.Max(0, Math.Min((RH - 75) / 25.0, 1));
+double T_factor = 0;
+if (T > 0 && T < 10)
+T_factor = T / 10.0;
+else if (T >= 10 && T <= 30)
+T_factor = 1;
+else if (T > 30 && T < 40)
+T_factor = (40 - T) / 10.0;
+else
+T_factor = 0;
+return 100 * RH_norm * T_factor; 
+
+
